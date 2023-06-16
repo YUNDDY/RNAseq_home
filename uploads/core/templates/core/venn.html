@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h3>How to draw Venn Diagram</h3>
+  ================================================================================================<br>
+  1. Upload your File<br>
+     Example file format:<br>
+     <table border="1">
+      <th>GroupA</th>
+      <th>GroupB</th>
+      <th>GroupC</th>
+      <tr><!-- 첫번째 줄 시작 -->
+          <td>geneA</td>
+          <td>geneB</td>
+          <td>geneC</td>
+      </tr><!-- 첫번째 줄 끝 -->
+      <tr><!-- 두번째 줄 시작 -->
+          <td>geneB</td>
+          <td>geneC</td>
+          <td>geneF</td>
+      </tr><!-- 두번째 줄 끝 -->
+      <tr><!-- 첫번째 줄 시작 -->
+        <td>geneC</td>
+        <td>geneD</td>
+        <td>geneG</td>
+      </tr><!-- 첫번째 줄 끝 -->
+      <tr><!-- 첫번째 줄 시작 -->
+        <td>geneD</td>
+        <td>geneE</td>
+      </tr><!-- 첫번째 줄 끝 -->
+        </table>
+  <br>2. click the "Upload"<br><br>
+  3. If you want to download the list for venn diagram element, click "Download venn Diagram list"<br>
+  ================================================================================================<br>
+</div>
+<div class="container mt-5">
+    <h3>Upload a file</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="myfile">Select a file:</label>
+            <input type="file" class="form-control-file" id="myfile" name="myfile">
+        </div>
+        <button type="submit" class="btn btn-primary" id="upload-btn">Upload</button>
+    </form>
+
+    <div class="mt-5" id="result-div">
+      {% if uploaded_file_url %}
+      <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+
+      <h2>Uploaded Data(10 line)</h2>
+      <pre>{{ file_content }}</pre>
+
+        <h2>Venn Diagram:</h2>
+        {{ plot_venn|safe }}
+        <br>
+        {% if download_link %}
+          <a href="/uploads/download/?file={{ download_link }} "style="font-size: 16px;">Download venn Diagram list</a>
+          <br>
+          {% endif %}
+          <br>
+        {% if venn_download_link %}
+          <a href="{{ venn_download_link }}" download="VennDiagram.png" style="font-size: 16px;">Download VennDiagram PNG</a>
+        {% endif %}
+        {% endif %}
+    </div>
+  <br>
+  <p><a href="{% url 'home' %}">Return to home</a></p>
+  <br>
+</div>
+
+<script>
+    const checkbox = document.querySelector('#cluster');
+    const uploadBtn = document.querySelector('#upload-btn');
+
+    checkbox.addEventListener('click', () => {
+        uploadBtn.click();
+    });
+</script>
+
+
+
+{% endblock %}

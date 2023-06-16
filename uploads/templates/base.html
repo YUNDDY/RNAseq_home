@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-image: url('https://cdn.imweb.me/thumbnail/20221026/26a131100ab2c.png');
+        background-repeat: no-repeat;
+        background-position : top right;
+        background-size : 20% ;
+      }
+      table {
+        border-collapse: collapse;
+        text-align: center;
+        width: 70%;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        text-align: center !important;
+    }
+    </style>
+    <meta charset="utf-8">
+    <title>RNAseq home</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h2>RNAseq</h2>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>

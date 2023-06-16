@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+
+{% block styles %}
+<style>
+  .vertical-line {
+    border-left: 1px solid black;
+    height: 100%;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <br>
+    <h3>RNAseq DEG result handling</h3>
+    <ul>
+      <li>
+        <h4><a href="{% url 'data_filter' %}">Data filter</a>></h4>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-4 vertical-line">
+    <br>
+    <h3>Graph for RNAseq data</h3>
+    <ul>
+      <li>
+        <h4><a href="{% url 'simple_upload' %}">Heatmap</a></h4>
+      </li>
+      <li>
+        <h4><a href="{% url 'venn' %}">Venn Diagram</a></h4>
+      </li>
+      <li>
+        <h4><a href="{% url 'PCA' %}">PCA</a></h4>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-4">
+    <br>
+    <h3>Document for RNAseq analysis</h3>
+    <ul>
+      <li>
+        <h4><a href="{% url 'simple_upload' %}">Document Download</a></h4>
+      </li>
+    </ul>
+
+    <ul>
+      {% for obj in documents %}
+        <li>
+          <a href="{{ obj.document.url }}">{{ obj.document.name }}</a>
+          <small>(Uploaded at: {{ obj.uploaded_at }})</small>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

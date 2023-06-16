@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h3>How to use</h3>
+  ================================================================================================<br>
+  1. Upload your File<br>
+     Example file format:<br>
+     <table border="1">
+      <th></th>
+      <th>logFC</th>
+      <th>pvalue</th>
+      <th>FDR</th>
+      <tr><!-- 첫번째 줄 시작 -->
+          <td>geneA</td>
+          <td>1.36</td>
+          <td>0.07</td>
+          <td>0.076</td>
+      </tr><!-- 첫번째 줄 끝 -->
+      <tr><!-- 두번째 줄 시작 -->
+          <td>geneB</td>
+          <td>6.15</td>
+          <td>0.001</td>
+          <td>0.002</td>
+      </tr><!-- 두번째 줄 끝 -->
+      <tr><!-- 첫번째 줄 시작 -->
+        <td>geneC</td>
+        <td>10.5</td>
+        <td>0.2</td>
+        <td>0.2</td>
+      </tr><!-- 첫번째 줄 끝 -->
+      <tr><!-- 첫번째 줄 시작 -->
+        <td>geneD</td>
+        <td>1.8</td>
+        <td>0.25</td>
+        <td>0.5</td>
+      </tr><!-- 첫번째 줄 끝 -->
+        </table>
+  <br>2. click the "Upload"<br><br>
+  3. If you want to download the list for venn diagram element, click "Download venn Diagram list"<br>
+  ================================================================================================<br><br>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Upload a file</h3>
+    <input type="file" name="myfile">
+    <br>
+    <label for="logFC_threshold">logFC Threshold:</label>
+    <input type="number" step="0.1" name="logFC_threshold">
+    <br>
+    <label for="pval_threshold">P-value Threshold:</label>
+    <input type="number" step="0.01" name="pval_threshold">
+    <br>
+    <label for="FDR_threshold">FDR Threshold:</label>
+    <input type="number" step="0.01" name="FDR_threshold">
+    <br>
+    <button type="submit">Upload</button>
+  </form>
+
+  {% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+  {% endif %}
+
+  {% if uploaded_file_url %}
+    <h2>Uploaded Data(10 line)</h2>
+    <pre>{{ file_content }}</pre>
+  {% endif %}
+
+  {% if uploaded_file_url %}
+    <h2>Filtered Data(10 line)</h2>
+    <pre>{{ filtered_df }}</pre>
+    {% if download_link %}
+      <a href="/uploads/download/?file={{ download_link }}">Download Filtered Data</a>
+    {% endif %}
+  {% endif %}
+
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <p><a href="{% url 'home' %}">Return to home</a></p>
+{% endblock %}

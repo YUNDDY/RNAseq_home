@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>How to draw Heatmap</h3>
+    ================================================================================================<br>
+    1. Upload your File<br>
+       Example file format:<br>
+       <table border="1">
+        <th></th>
+        <th>Sample_1</th>
+        <th>Sample_2</th>
+        <th>Sample_3</th>
+        <tr><!-- 첫번째 줄 시작 -->
+            <td>geneA</td>
+            <td>1.36</td>
+            <td>2.57</td>
+            <td>2.59</td>
+        </tr><!-- 첫번째 줄 끝 -->
+        <tr><!-- 두번째 줄 시작 -->
+            <td>geneB</td>
+            <td>6.15</td>
+            <td>4.24</td>
+            <td>10.28</td>
+        </tr><!-- 두번째 줄 끝 -->
+        <tr><!-- 첫번째 줄 시작 -->
+          <td>geneC</td>
+          <td>10.5</td>
+          <td>17.2</td>
+          <td>24.4</td>
+        </tr><!-- 첫번째 줄 끝 -->
+        <tr><!-- 첫번째 줄 시작 -->
+          <td>geneD</td>
+          <td>1.8</td>
+          <td>1.57</td>
+          <td>0.24</td>
+        </tr><!-- 첫번째 줄 끝 -->
+          </table>
+    <br>2. If you want to clustering sample and genes, please check the "Cluster rows and columns"<br><br>
+    <br>3. click the "Upload"<br><br>
+    ================================================================================================<br>
+  </div>
+  <br>
+<div class="container mt-5">
+    <h3>Upload a file</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="myfile">Select a file:</label>
+            <input type="file" class="form-control-file" id="myfile" name="myfile">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="cluster_r" name="cluster_r">
+            <label class="form-check-label" for="cluster_r">Cluster rows(gene)</label>
+            <input type="checkbox" class="form-check-input" id="cluster_c" name="cluster_c">
+            <label class="form-check-label" for="cluster_c">Cluster columns(sample)</label>
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="gene_view" name="gene_view">
+          <label class="form-check-label" for="gene_view">hide gene name</label>
+
+      </div>
+        <div class="form-group form-check">
+        <!--https://matplotlib.org/stable/gallery/color/colormap_reference.html-->
+          <label for="color">Color:</label>
+            <select id="color" name="color">
+            <option value="RdBu_r">Blue-Red</option>
+            <option value="PRGn">Purple--Green</option>
+            <option value="PuOr">Purple-Orange</option>
+            <option value="RdYlBu_r">Blue-Yellow-Red</option>
+            <option value="bwr">Blue-Red</option>
+            <option value="coolwarm">coolwarm</option>
+            <option value="spectral_r">rainbow</option>
+          </select>
+  <br>
+        </div>
+        <button type="submit" class="btn btn-primary" id="upload-btn">Upload</button>
+    </form>
+
+    <div class="mt-5" id="result-div">
+      {% if uploaded_file_url %}
+      <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+      <br>
+      <h3>Uploaded Data(10 line)</h3>
+      <pre>{{ file_content }}</pre>
+<br>
+        {{ heatmap_html|safe }}
+      <br>
+      <br>
+        {% if heatmap_download_link %}
+          <a href="{{ heatmap_download_link }}" download="heatmap.png" style="font-size: 16px;">Download Heatmap PNG</a>
+        {% endif %}
+
+      {% endif %}
+    </div>
+<br><br>
+<p><a href="{% url 'home' %}">Return to home</a></p>
+</div>
+
+<script>
+    const checkbox = document.querySelector('#cluster');
+    const uploadBtn = document.querySelector('#upload-btn');
+
+    checkbox.addEventListener('click', () => {
+        uploadBtn.click();
+    });
+</script>
+
+
+{% endblock %}
